@@ -3,7 +3,7 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 
-database_path = os.environ.get('DATABASE_PATH')
+database_path = os.environ.get('DATABASE_URL')
 
 if database_path is None:
     database_path = "postgresql://{}:{}@{}:{}/{}".format(
