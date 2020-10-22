@@ -3,15 +3,21 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 
+import dotenv
+from os.path import abspath, dirname, join
+
 database_path = os.environ.get('DATABASE_URL')
 
 if database_path is None:
+    project_dir = dirname(abspath(__file__))
+    DOTENV_PATH = join(project_dir, '.env')
+    
     database_path = "postgresql://{}:{}@{}:{}/{}".format(
-                        os.environ.get('USER'),
-                        os.environ.get('PASSWD'),
-                        os.environ.get('HOST'),
-                        os.environ.get('PORT'),
-                        os.environ.get('DB'))
+                        dotenv.get_key(DOTENV_PATH, 'USER'),
+                        dotenv.get_key(DOTENV_PATH, 'PASSWD'),
+                        dotenv.get_key(DOTENV_PATH, 'HOST'),
+                        dotenv.get_key(DOTENV_PATH, 'PORT'),
+                        dotenv.get_key(DOTENV_PATH, 'DB'))
 
 db = SQLAlchemy()
 
