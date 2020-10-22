@@ -3,12 +3,15 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 
-DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
-                    os.environ.get('USER'),
-                    os.environ.get('PASSWD'),
-                    os.environ.get('HOST'),
-                    os.environ.get('PORT'),
-                    os.environ.get('DB'))
+database_path = os.environ.get('DATABASE_PATH')
+
+if database_path is None:
+    database_path = "postgresql://{}:{}@{}:{}/{}".format(
+                        os.environ.get('USER'),
+                        os.environ.get('PASSWD'),
+                        os.environ.get('HOST'),
+                        os.environ.get('PORT'),
+                        os.environ.get('DB'))
 
 db = SQLAlchemy()
 
@@ -18,7 +21,7 @@ setup_db(app)
 '''
 
 
-def setup_db(app, database_path=DATABASE_URL):
+def setup_db(app):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
